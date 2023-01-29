@@ -1,4 +1,5 @@
-let input = ""
+let input = "0"
+let lastClickEquals = false
 
 let btn = document.getElementsByClassName("button");
 for (var i = 0; i < btn.length; i++) {
@@ -6,26 +7,32 @@ for (var i = 0; i < btn.length; i++) {
 }
 
 function getButton (){
+
+    
     if (this.classList.contains("clear")){
         console.log("Clearing...")
         input = "0"
+        lastClickEquals = false
     }
     else if (this.classList.contains("equals")){
         console.log("Time to evaluate...")
         input = parseStr(input) // add function here to parse string
+        lastClickEquals = true
     }
     else if (!this.classList.contains("number")){
         input += checkOperand(this)
+        lastClickEquals = false
     }
     else {
-        input += this.innerHTML
+        if (lastClickEquals) input = this.innerHTML
+        else input += this.innerHTML
+        lastClickEquals = false
     }
     console.log (`Input: ${input}`)
     let screen = document.querySelector(".calc-screen")
     screen.innerHTML = input
 
     // Start from zero if we just evaluated a string
-    if (this.classList.contains("equals")) input = ""
 }
 
 function checkOperand(op) {
